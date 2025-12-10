@@ -1,12 +1,13 @@
 # My OpenCode Setup
 
-Personal OpenCode commands and custom agents for enhanced development workflow across Python, TypeScript, and Terraform projects.
+Personal OpenCode commands, custom agents, and plugins for enhanced development workflow across Python, TypeScript, and Terraform projects.
 
 ## Overview
 
 This repository contains:
 - **15 Custom Commands** organized into 5 categories
 - **1 Custom Agent** for controlled development workflow
+- **1 Plugin** for system notifications
 
 ### Commands
 - **PR & Git Workflows** (4 commands)
@@ -17,6 +18,9 @@ This repository contains:
 
 ### Agents
 - **build-ask**: Full build mode that requests permission before making edits
+
+### Plugins
+- **notifications**: macOS notifications for permission requests and session completion
 
 ## Tech Stack
 
@@ -47,6 +51,7 @@ cd ~/my-opencode-setup
 This installs:
 - Commands to `~/.config/opencode/command/`
 - Agents to `~/.config/opencode/agent/`
+- Plugins to `~/.config/opencode/plugin/`
 
 ### Manual Installation
 
@@ -59,6 +64,9 @@ ln -sf ~/my-opencode-setup/commands/* ~/.config/opencode/command/
 
 # Create symlinks for agents
 ln -sf ~/my-opencode-setup/agents/* ~/.config/opencode/agent/
+
+# Create symlinks for plugins
+ln -sf ~/my-opencode-setup/plugins/* ~/.config/opencode/plugin/
 ```
 
 ### Updates
@@ -209,6 +217,30 @@ Analyzes error logs and stack traces to suggest fixes.
 
 ---
 
+
+## Plugins
+
+### `notifications`
+Sends native macOS notifications for OpenCode events to keep you informed when you're working in other applications.
+
+**Features:**
+- **Permission requests**: Get notified when an agent needs approval for edits or bash commands
+- **Session completion**: Get notified when the agent finishes working
+- **Error alerts**: Get notified if an error occurs during a session
+- Uses native macOS notification center with sound alerts
+
+**Requirements:**
+- macOS (uses `osascript` for notifications)
+- Automatically loaded by OpenCode on startup
+
+**Notification Events:**
+- `permission.updated` - Agent requesting permission (Glass sound)
+- `session.idle` - Agent finished working (Glass sound)
+- `session.error` - Error occurred (Basso sound)
+
+**Usage:**
+Once installed, the plugin automatically runs in the background. No configuration needed!
+
 ---
 
 ## Custom Agents
@@ -252,8 +284,10 @@ Commands use your current agent (build/plan/build-ask). No agent override specif
 
 - **Commands**: Use `/` in OpenCode TUI to see all available commands
 - **Agents**: Press **Tab** to cycle through agents, or use `@agent-name`
+- **Plugins**: Automatically loaded on OpenCode startup - check console for initialization messages
 - Commands are language-aware (detect .py, .ts, .tf extensions)
 - PR commands require GitHub CLI authentication: `gh auth login`
+- **Notification plugin pairs perfectly with build-ask agent** - get notified when permission is needed!
 
 ## Customization
 

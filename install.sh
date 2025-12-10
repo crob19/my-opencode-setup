@@ -6,13 +6,14 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo "🚀 Installing OpenCode Commands and Agents..."
+echo "🚀 Installing OpenCode Commands, Agents, and Plugins..."
 
 # Check if OpenCode config directory exists
 if [ ! -d "$HOME/.config/opencode" ]; then
     echo -e "${YELLOW}⚠️  OpenCode config directory not found. Creating it...${NC}"
     mkdir -p "$HOME/.config/opencode/command"
     mkdir -p "$HOME/.config/opencode/agent"
+    mkdir -p "$HOME/.config/opencode/plugin"
 fi
 
 # Check if command directory exists
@@ -25,6 +26,12 @@ fi
 if [ ! -d "$HOME/.config/opencode/agent" ]; then
     echo -e "${YELLOW}Creating agent directory...${NC}"
     mkdir -p "$HOME/.config/opencode/agent"
+fi
+
+# Check if plugin directory exists
+if [ ! -d "$HOME/.config/opencode/plugin" ]; then
+    echo -e "${YELLOW}Creating plugin directory...${NC}"
+    mkdir -p "$HOME/.config/opencode/plugin"
 fi
 
 # Get the directory where this script is located
@@ -87,6 +94,30 @@ if [ -d "$SCRIPT_DIR/agents" ]; then
     fi
 fi
 
+# Create plugin symlinks (if plugins directory exists)
+if [ -d "$SCRIPT_DIR/plugins" ]; then
+    PLUGIN_COUNT=$(ls -1 "$SCRIPT_DIR/plugins"/*.js 2>/dev/null | wc -l)
+    
+    if [ "$PLUGIN_COUNT" -gt 0 ]; then
+        echo ""
+        echo "Installing plugins..."
+        for plugin_file in "$SCRIPT_DIR/plugins"/*.js; do
+            plugin_name=$(basename "$plugin_file")
+            target="$HOME/.config/opencode/plugin/$plugin_name"
+            
+            # Remove existing symlink or file if it exists
+            if [ -e "$target" ] || [ -L "$target" ]; then
+                echo -e "${YELLOW}  Replacing existing: $plugin_name${NC}"
+                rm "$target"
+            fi
+            
+            # Create symlink
+            ln -s "$plugin_file" "$target"
+            echo -e "${GREEN}  ✓ Installed plugin: $plugin_name${NC}"
+        done
+    fi
+fi
+
 echo ""
 echo -e "${GREEN}✅ Installation complete!${NC}"
 echo ""
@@ -99,9 +130,16 @@ if [ -d "$HOME/.config/opencode/agent" ] && [ "$(ls -A $HOME/.config/opencode/ag
     ls -1 "$HOME/.config/opencode/agent" | grep -E "\.md$" | sed 's/\.md$//' | sed 's/^/  @/g'
 fi
 
+if [ -d "$HOME/.config/opencode/plugin" ] && [ "$(ls -A $HOME/.config/opencode/plugin/*.js 2>/dev/null)" ]; then
+    echo ""
+    echo "Plugins installed:"
+    ls -1 "$HOME/.config/opencode/plugin" | grep -E "\.js$" | sed 's/\.js$//' | sed 's/^/  - /g'
+fi
+
 echo ""
 echo "Usage:"
 echo "  Commands: Type / in OpenCode TUI to see all available commands"
 echo "  Agents: Press Tab to cycle through agents, or use @agent-name to invoke"
+echo "  Plugins: Automatically loaded by OpenCode on startup"
 echo ""
 echo "To update: cd $SCRIPT_DIR && git pull && ./install.sh"
