@@ -217,7 +217,6 @@ Analyzes error logs and stack traces to suggest fixes.
 
 ---
 
----
 
 ## Plugins
 
