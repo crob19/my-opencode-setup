@@ -1,15 +1,22 @@
 # My OpenCode Setup
 
-Personal OpenCode commands for enhanced development workflow across Python, TypeScript, and Terraform projects.
+Personal OpenCode commands and custom agents for enhanced development workflow across Python, TypeScript, and Terraform projects.
 
 ## Overview
 
-This repository contains 15 custom OpenCode commands organized into categories:
+This repository contains:
+- **15 Custom Commands** organized into 5 categories
+- **1 Custom Agent** for controlled development workflow
+
+### Commands
 - **PR & Git Workflows** (4 commands)
 - **Code Quality & Analysis** (4 commands) 
 - **Testing** (2 commands)
 - **Refactoring** (3 commands)
 - **Debugging** (2 commands)
+
+### Agents
+- **build-ask**: Full build mode that requests permission before making edits
 
 ## Tech Stack
 
@@ -37,14 +44,21 @@ cd ~/my-opencode-setup
 ./install.sh
 ```
 
+This installs:
+- Commands to `~/.config/opencode/command/`
+- Agents to `~/.config/opencode/agent/`
+
 ### Manual Installation
 
 ```bash
 # Clone the repository
 git clone git@github.com:cameronclippd/my-opencode-setup.git ~/my-opencode-setup
 
-# Create symlinks
+# Create symlinks for commands
 ln -sf ~/my-opencode-setup/commands/* ~/.config/opencode/command/
+
+# Create symlinks for agents
+ln -sf ~/my-opencode-setup/agents/* ~/.config/opencode/agent/
 ```
 
 ### Updates
@@ -53,7 +67,7 @@ If installed with symlinks:
 ```bash
 cd ~/my-opencode-setup
 git pull
-# Commands automatically updated!
+./install.sh  # Re-run to ensure all symlinks are current
 ```
 
 ## Commands Reference
@@ -195,17 +209,49 @@ Analyzes error logs and stack traces to suggest fixes.
 
 ---
 
+---
+
+## Custom Agents
+
+### `build-ask`
+A primary agent that provides full build mode capabilities but requests permission before making any edits.
+
+**Features:**
+- All tools enabled (read, write, edit, bash, etc.)
+- Asks for permission before file edits or modifications
+- Safe bash commands pre-approved (git status, ls, cat, etc.)
+- All other bash commands require approval
+- Transparent about changes with clear explanations
+
+**Usage:**
+- Press **Tab** to cycle between agents: `build` → `plan` → `build-ask`
+- Or invoke directly: `@build-ask`
+
+**When to use:**
+- When you want full development assistance with safety guardrails
+- Reviewing changes before they're made
+- Working on sensitive code that requires careful oversight
+- Learning what OpenCode is doing behind the scenes
+
+**Pre-approved commands:**
+- `git status`, `git diff*`, `git log*`, `git branch*`, `git show*`
+- `ls*`, `cat*`, `pwd`, `echo*`
+- `which*`, version checks (`node --version`, etc.)
+
+---
+
 ## Configuration
 
 ### Model Selection
 Commands use your currently selected model in OpenCode. No model override specified, so you have full flexibility.
 
 ### Agent Selection
-Commands use your current agent (build/plan). No agent override specified.
+Commands use your current agent (build/plan/build-ask). No agent override specified.
 
 ## Tips
 
-- Use `/` in OpenCode TUI to see all available commands
+- **Commands**: Use `/` in OpenCode TUI to see all available commands
+- **Agents**: Press **Tab** to cycle through agents, or use `@agent-name`
 - Commands are language-aware (detect .py, .ts, .tf extensions)
 - PR commands require GitHub CLI authentication: `gh auth login`
 
