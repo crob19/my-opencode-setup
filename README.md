@@ -5,7 +5,7 @@ Personal OpenCode commands, custom agents, and plugins for enhanced development 
 ## Overview
 
 This repository contains:
-- **15 Custom Commands** organized into 5 categories
+- **16 Custom Commands** organized into 6 categories
 - **1 Custom Agent** for controlled development workflow
 - **1 Plugin** for system notifications
 
@@ -15,6 +15,7 @@ This repository contains:
 - **Testing** (2 commands)
 - **Refactoring** (3 commands)
 - **Debugging** (2 commands)
+- **Utilities** (1 command)
 
 ### Agents
 - **build-ask**: Full build mode that requests permission before making edits
@@ -214,6 +215,30 @@ Analyzes error logs and stack traces to suggest fixes.
 - Provides prevention strategies
 
 **Usage:** `/debug-logs "paste error output here"`
+
+---
+
+### Utilities
+
+#### `/copilot-usage`
+Check your GitHub Copilot billing usage and costs.
+- Shows current month's usage breakdown by default
+- Supports both personal and organization accounts
+- Auto-detects context from git repository
+- Displays costs, seat allocation (for orgs), and premium request usage
+- Optional flags: `--month`, `--year`, `--verbose`
+
+**Usage:** 
+- `/copilot-usage` - Auto-detect account from git remote
+- `/copilot-usage personal` - Personal account
+- `/copilot-usage clippd` - Specific organization
+- `/copilot-usage --month 11 --year 2024` - Historical data
+- `/copilot-usage --verbose` - Detailed SKU breakdown
+
+**Requirements:** 
+- GitHub CLI with appropriate scopes:
+  - Personal: `gh auth refresh -h github.com -s user`
+  - Organization: `gh auth refresh -h github.com -s admin:org`
 
 ---
 
