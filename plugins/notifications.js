@@ -14,19 +14,22 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
   return {
     event: async ({ event }) => {
       try {
+        // Note: -appIcon parameter is broken in terminal-notifier (issue #320)
+        // Using terminal-notifier without custom icon for now
+        
         // Permission requested - agent needs approval
         if (event.type === "permission.updated") {
-          await $`osascript -e 'display notification "Agent requesting permission to make changes" with title "OpenCode Permission" sound name "Glass"'`
+          await $`terminal-notifier -title "OpenCode Permission" -message "Agent requesting permission to make changes" -sound Glass -timeout 5`
         }
 
         // Session idle - agent finished working
         if (event.type === "session.idle") {
-          await $`osascript -e 'display notification "Agent finished working!" with title "OpenCode Complete" sound name "Glass"'`
+          await $`terminal-notifier -title "OpenCode Complete" -message "Agent finished working!" -sound Glass -timeout 5`
         }
 
         // Session error - something went wrong
         if (event.type === "session.error") {
-          await $`osascript -e 'display notification "An error occurred during the session" with title "OpenCode Error" sound name "Basso"'`
+          await $`terminal-notifier -title "OpenCode Error" -message "An error occurred during the session" -sound Basso -timeout 5`
         }
       } catch (error) {
         // Silently fail if notifications don't work
