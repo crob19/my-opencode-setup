@@ -20,6 +20,10 @@ async function main() {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--month' && i + 1 < args.length) {
       month = parseInt(args[i + 1]);
+      if (isNaN(month)) {
+        console.error('Error: --month must be a number');
+        process.exit(1);
+      }
       i++;
     } else if (args[i] === '--year' && i + 1 < args.length) {
       year = parseInt(args[i + 1]);
