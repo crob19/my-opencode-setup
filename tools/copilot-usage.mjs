@@ -23,6 +23,10 @@ async function main() {
       i++;
     } else if (args[i] === '--year' && i + 1 < args.length) {
       year = parseInt(args[i + 1]);
+      if (isNaN(year)) {
+        console.error('Error: --year must be a number');
+        process.exit(1);
+      }
       i++;
     } else if (args[i] === '--verbose') {
       verbose = true;
