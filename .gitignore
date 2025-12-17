@@ -13,3 +13,5 @@
 # Temporary files
 *.tmp
 *.bak
+
+.opencode-wt/
