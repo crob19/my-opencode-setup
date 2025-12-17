@@ -55,7 +55,7 @@ async function main() {
     // Auto-detect from git remote
     try {
       const remote = await $`git remote get-url origin 2>/dev/null`.text();
-      const match = remote.match(/[:/]([^/]+)\/[^/]+\.git/);
+      const match = remote.match(/[:/]([^/]+)\/[^/]+(?:\.git)?/);
       if (match) {
         const owner = match[1];
         // Check if it's an org
