@@ -353,7 +353,7 @@ A custom tool that provides fast, direct access to GitHub Copilot billing and us
 **Command usage:**
 - `/copilot-usage` - Auto-detect account from git remote
 - `/copilot-usage personal` - Check personal account
-- `/copilot-usage clippd` - Check specific organization
+- `/copilot-usage my-org` - Check specific organization
 - `/copilot-usage --month 11 --year 2024` - Historical data
 - `/copilot-usage --verbose` - Detailed breakdown
 
