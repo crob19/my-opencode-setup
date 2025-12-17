@@ -91,31 +91,51 @@ async function main() {
       try {
         usageSummary = await $`gh api /users/${accountName}/settings/billing/usage/summary${queryString}`.json();
       } catch (e) {
-        // May not exist
+        // Check for authentication/permission errors and rethrow
+        if (e.stderr && (e.stderr.includes("user") || e.stderr.includes("admin:org"))) {
+          throw e;
+        }
+        // Otherwise, may not exist - suppress error
       }
 
       try {
         premiumUsage = await $`gh api /users/${accountName}/settings/billing/premium_request/usage${queryString}`.json();
-      } catch {
-        // Premium usage might not exist
+      } catch (e) {
+        // Check for authentication/permission errors and rethrow
+        if (e.stderr && (e.stderr.includes("user") || e.stderr.includes("admin:org"))) {
+          throw e;
+        }
+        // Premium usage might not exist - suppress error
       }
     } else {
       try {
         usageSummary = await $`gh api /organizations/${accountName}/settings/billing/usage/summary${queryString}`.json();
       } catch (e) {
-        // May not exist
+        // Check for authentication/permission errors and rethrow
+        if (e.stderr && (e.stderr.includes("user") || e.stderr.includes("admin:org"))) {
+          throw e;
+        }
+        // Otherwise, may not exist - suppress error
       }
 
       try {
         premiumUsage = await $`gh api /organizations/${accountName}/settings/billing/premium_request/usage${queryString}`.json();
-      } catch {
-        // Premium usage might not exist
+      } catch (e) {
+        // Check for authentication/permission errors and rethrow
+        if (e.stderr && (e.stderr.includes("user") || e.stderr.includes("admin:org"))) {
+          throw e;
+        }
+        // Premium usage might not exist - suppress error
       }
 
       try {
         seatInfo = await $`gh api /orgs/${accountName}/copilot/billing`.json();
-      } catch {
-        // Seat info might not be available
+      } catch (e) {
+        // Check for authentication/permission errors and rethrow
+        if (e.stderr && (e.stderr.includes("user") || e.stderr.includes("admin:org"))) {
+          throw e;
+        }
+        // Seat info might not be available - suppress error
       }
     }
   } catch (error) {
