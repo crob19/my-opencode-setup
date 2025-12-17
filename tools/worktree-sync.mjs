@@ -226,11 +226,14 @@ async function main() {
       console.log(`${colors.yellow}Some worktrees could not be updated. Check for uncommitted changes.${colors.reset}\n`);
     }
   } else {
-    const behindCount = worktrees.filter(async wt => {
-      if (!wt.branch) return false;
-      const remote = await getRemoteStatus(wt.path, wt.branch);
-      return remote && !remote.noUpstream && remote.behind > 0;
-    }).length;
+    const behindStatuses = await Promise.all(
+      worktrees.map(async wt => {
+        if (!wt.branch) return false;
+        const remote = await getRemoteStatus(wt.path, wt.branch);
+        return remote && !remote.noUpstream && remote.behind > 0;
+      })
+    );
+    const behindCount = behindStatuses.filter(Boolean).length;
     
     if (behindCount > 0) {
       console.log(`${colors.yellow}${behindCount} worktree${behindCount !== 1 ? 's have' : ' has'} updates available${colors.reset}`);
