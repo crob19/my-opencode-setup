@@ -39,7 +39,7 @@ export default tool({
             const owner = match[1];
             // Check if it's an org
             const orgs = await Bun.$`gh api /user/orgs --jq '.[].login'`.text();
-            if (orgs.includes(owner)) {
+            if (orgs.split('\n').map(o => o.trim()).includes(owner)) {
               accountType = "org";
               accountName = owner;
             }
