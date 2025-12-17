@@ -109,14 +109,6 @@ async function main() {
     return;
   }
   
-  // Check if directory already exists
-  const dirExists = await Bun.file(worktreePath).exists();
-  if (dirExists) {
-    console.error(`${colors.red}❌ Error: Directory already exists at ${worktreePath}${colors.reset}`);
-    console.log(`\nPlease remove it first or use a different branch name.`);
-    process.exit(1);
-  }
-  
   // Ensure .opencode-wt/ directory exists
   await $`mkdir -p ${worktreeBase}`.quiet();
   
