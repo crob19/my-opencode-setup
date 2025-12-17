@@ -5,12 +5,13 @@ Personal OpenCode commands, custom agents, and plugins for enhanced development 
 ## Overview
 
 This repository contains:
-- **16 Custom Commands** organized into 6 categories
+- **22 Custom Commands** organized into 7 categories
 - **1 Custom Agent** for controlled development workflow
 - **1 Plugin** for enhanced functionality
-- **1 Custom Tool** for direct execution
+- **7 Custom Tools** for direct execution
 
 ### Commands
+- **Git Worktree Management** (6 commands)
 - **PR & Git Workflows** (4 commands)
 - **Code Quality & Analysis** (4 commands) 
 - **Testing** (2 commands)
